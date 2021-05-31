@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Blind Shift.mp3-f764d825754a92c799184b2b8300083e.mp3str"
+
+[deps]
+
+source_file="res://music/Blind Shift.mp3"
+dest_files=[ "res://.import/Blind Shift.mp3-f764d825754a92c799184b2b8300083e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
