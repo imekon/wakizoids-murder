@@ -47,7 +47,6 @@ var escape_time = 0
 var tween_stop
 
 func _ready():
-	Global.player = player
 	Global.main = self
 	
 	var items = []
