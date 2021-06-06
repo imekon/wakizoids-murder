@@ -1,8 +1,8 @@
 extends Node2D
 
-onready var hostPort = $Panel/Host/Port
-onready var joinAddress = $Panel/Join/Address
-onready var joinPort = $Panel/Join/Port
+onready var hostPort = $PanelContainer/Panel/Host/Port
+onready var joinAddress = $PanelContainer/Panel/Join/Address
+onready var joinPort = $PanelContainer/Panel/Join/Port
 
 func _ready():
 	randomize()

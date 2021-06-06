@@ -18,12 +18,16 @@ var health = 100
 var collision_time = 0
 
 func _ready():
+	Global.player = self
+	
 	rset_config("rotation", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("position", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("visible", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("angle", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("thrust", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("velocity", MultiplayerAPI.RPC_MODE_PUPPET)
+	rset_config("health", MultiplayerAPI.RPC_MODE_PUPPET)
+	rset_config("shields", MultiplayerAPI.RPC_MODE_PUPPET)
 	
 	if(is_network_master()):
 		set_process_input(true)
@@ -80,6 +84,8 @@ func _synchronize():
 	rset("angle", angle)
 	rset("thrust", thrust)
 	rset("velocity", velocity)
+	rset("health", health)
+	rset("shields", shields)
 	
 func hit():
 	if shields > 30:
@@ -87,7 +93,7 @@ func hit():
 	else:
 		health -= 30
 		
-	if health <= 0:
+	if health <= 0 && is_network_master():
 		Global.game_lost()
 
 func scrape(amount):
@@ -98,5 +104,5 @@ func scrape(amount):
 	if health > 0:
 		health -= amount
 		
-	if health <= 0:
+	if health <= 0 && is_network_master():
 		Global.game_lost()
