@@ -6,9 +6,6 @@ onready var score_label = $PlayerShip/HUD/ScoreLabel
 onready var thrust_label = $PlayerShip/HUD/ThrustLabel
 onready var rock_label = $PlayerShip/HUD/RockLabel
 onready var alien_label = $PlayerShip/HUD/AlienLabel
-onready var symbols_label = $PlayerShip/HUD/SymbolLabel
-onready var reminder_label = $PlayerShip/HUD/ReminderLabel
-onready var reminder_tween = $PlayerShip/HUD/ReminderLabel/Tween
 
 onready var radar = $PlayerShip/HUD/Radar
 
@@ -59,8 +56,7 @@ func _ready():
 		else:
 			music1.play()
 			
-	reminder_tween.interpolate_property(reminder_label, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 5, Tween.TRANS_QUAD, Tween.EASE_IN)
-	reminder_tween.start()
+	Global.emit_signal("levelLoaded")
 			
 func _physics_process(delta):
 	var rock_count = get_tree().get_nodes_in_group("rocks").size()

@@ -8,7 +8,6 @@ const MAX_CLIENTS = 4
 
 onready var explosion = preload("res://scenes/Explosion.tscn")
 
-var player
 var main
 
 var engine_playing = false
@@ -25,6 +24,7 @@ var peers = []
 var levelScene = preload("res://scenes/Main.tscn")
 var playerScene = preload("res://scenes/PlayerShip.tscn")
 
+var current_player
 var levelInstance
 
 signal levelLoaded
@@ -72,16 +72,16 @@ func stop_engine_sound():
 	engine_playing = false
 		
 func game_won():
-	player_score = player.score
-	if player.score > high_score:
-		high_score = player.score
+	player_score = current_player.score
+	if current_player.score > high_score:
+		high_score = current_player.score
 	save_high_score(SCORING_FILENAME)
 	get_tree().change_scene("res://scenes/GameOver.tscn")
 
 func game_lost():
-	player_score = player.score
-	if player.score > high_score:
-		high_score = player.score
+	player_score = current_player.score
+	if current_player.score > high_score:
+		high_score = current_player.score
 #	if sounds_enabled:
 #		main.play_explosion_sound()
 	save_high_score(SCORING_FILENAME)
@@ -120,7 +120,7 @@ func server_setup_after_load():
 	levelInstance = get_tree().current_scene
 	get_tree().network_peer = networkPeer
 	peers.append(1)
-	create_player(1)
+	current_player = create_player(1)
 
 func create_client(address, port):
 	connect("levelLoaded", self, "client_setup_after_load")
@@ -155,12 +155,12 @@ func server_disconnected():
 
 # NEEDS UPDATING FOR WAKIZOIDS	
 func create_player(peerId):
-	var x = randi() % 1024
-	var y = randi() % 600
+#	var x = randi() % 1024
+#	var y = randi() % 600
 	var player = playerScene.instance()
 	player.set_network_master(peerId)
 	player.name = String(peerId)
-	player.position = Vector2(x, y)
+#	player.position = Vector2(x, y)
 	# player.rotation_degrees = float(randi() % 360)
 	levelInstance.add_child(player)
 	return player

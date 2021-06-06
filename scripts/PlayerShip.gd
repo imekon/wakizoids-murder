@@ -16,10 +16,9 @@ var score = 0
 var shields = 100
 var health = 100
 var collision_time = 0
+var input_process = false
 
 func _ready():
-	Global.player = self
-	
 	rset_config("rotation", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("position", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("visible", MultiplayerAPI.RPC_MODE_PUPPET)
@@ -29,30 +28,28 @@ func _ready():
 	rset_config("health", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("shields", MultiplayerAPI.RPC_MODE_PUPPET)
 	
-	if(is_network_master()):
-		set_process_input(true)
-	else:
-		set_process_input(false)
+	if is_network_master():
+		input_process = true
 		
-func _input(event):
-	if event.is_action_pressed("left"):
-		angle -= ROTATION_SPEED
-		
-	if event.is_action_pressed("right"):
-		angle += ROTATION_SPEED
-		
-	if event.is_action_pressed("thrust"):
-		thrust += THRUST_SPEED
-		
-	if event.is_action_pressed("brake"):
-		thrust -= THRUST_BRAKE
-
-	thrust = clamp(thrust, 0, THRUST_MAX)
-
 func _physics_process(delta):
 	collision_time += delta
 	thrust -= THRUST_DECAY
-	
+
+	if input_process:	
+		if Input.is_action_pressed("left"):
+			angle -= ROTATION_SPEED
+			
+		if Input.is_action_pressed("right"):
+			angle += ROTATION_SPEED
+			
+		if Input.is_action_pressed("thrust"):
+			thrust += THRUST_SPEED
+			
+		if Input.is_action_pressed("brake"):
+			thrust -= THRUST_BRAKE
+
+	thrust = clamp(thrust, 0, THRUST_MAX)
+
 	velocity = Vector2(thrust, 0).rotated(deg2rad(angle - 90))
 		
 	# velocity.x = thrust * sin(deg2rad(angle))

@@ -15,7 +15,10 @@ func _process(delta):
 		time = 0
 	
 func _draw():
-	var player = Global.player
+	var player = Global.current_player
+	
+	if player == null:
+		return
 	
 	var px = player.global_position.x
 	var py = player.global_position.y
@@ -34,13 +37,11 @@ func _draw():
 	var rect = Rect2(x - 2, y - 2, 5, 5)
 	draw_rect(rect, Color.white)
 	
-	var draw_anyway
 	var colour
 
 	# rock positions
 	var rocks = get_tree().get_nodes_in_group("rocks")
 	for rock in rocks:
-		draw_anyway = false
 		colour = Color.green
 		
 		x = (rock.global_position.x - px) / scaling + w2
@@ -62,7 +63,6 @@ func _draw():
 	# alien positions
 	var aliens = get_tree().get_nodes_in_group("aliens")
 	for alien in aliens:
-		draw_anyway = false
 		colour = Color.red
 		
 		x = (alien.global_position.x - px) / scaling + w2
